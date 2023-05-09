@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Tracker</string>
+    <string name="app_bar">Jetpack Compose Demos</string>
+    <string name="bottom_navigation">Bottom Navigation</string>
 </resources>
