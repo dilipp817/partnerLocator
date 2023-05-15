@@ -7,20 +7,21 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.explorer.tracker.Components.*
 import com.explorer.tracker.ui.theme.TrackerTheme
+import com.explorer.tracker.ui.ui_components.ColumnDemo
+import com.explorer.tracker.ui.ui_components.ConstraintLayoutDemo
 import com.explorer.tracker.ui.ui_components.LeftNavigationDrawerContent
 import com.explorer.tracker.viewmodels.MainViewModel
 
 class MainActivity : ComponentActivity() {
-    private val mainViewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -30,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MainScreen()
+                    MainScaffold()
                 }
             }
         }
@@ -38,7 +39,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreen() {
+fun MainScaffold() {
+    val mainViewModel: MainViewModel = viewModel()
+    val currentComponent = mainViewModel.currentComponent.collectAsState()
 
     val materialBlue = colorResource(R.color.material_blue)
     val scaffoldState = rememberScaffoldState(rememberDrawerState(DrawerValue.Open))
@@ -58,12 +61,39 @@ fun MainScreen() {
                 Text("X")
             }
         },
-        drawerContent = { LeftNavigationDrawerContent() },
-        content = { Text("BodyContent") },
+        drawerContent = { LeftNavigationDrawerContent(scaffoldState) },
+        content = { MainScreenContent(currentComponent.value) },
         bottomBar = {
             BottomAppBar(backgroundColor = materialBlue) {
                 Text(stringResource(id = R.string.bottom_navigation))
             }
         }
     )
+}
+
+@Composable
+fun MainScreenContent(currentContent: Components) = when (currentContent) {
+    CONSTRAINTLAYOUT -> {ConstraintLayoutDemo()}
+    SCAFFOLD -> {}
+    COLUMN -> { ColumnDemo() }
+    ROW -> {}
+    BOX -> {}
+    CANVAS -> {}
+    IMAGE -> {}
+    LAZYVERTICALGRID -> {}
+    SHAPE -> {}
+    TEXT -> {}
+    ALERTDIALOG -> {}
+    BUTTON -> {}
+    CARDS -> {}
+    CHECKBOX -> {}
+    PROGRESSINDECATORS -> {}
+    DROPDOWNMENU -> {}
+    FLOATINGACTIONBUTTON -> {}
+    MODALDRAWERLAYOUT -> {}
+    RADIOBUTTON -> {}
+    SLIDER -> {}
+    SNACKBAR -> {}
+    SWITCH -> {}
+    TEXTFIELD -> {}
 }

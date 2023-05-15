@@ -1,13 +1,21 @@
 package com.explorer.tracker.viewmodels
 
+import androidx.compose.material.DrawerState
+import androidx.compose.material.DrawerValue
 import androidx.lifecycle.ViewModel
 import com.explorer.tracker.Components
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 
 class MainViewModel : ViewModel() {
 
+    private val _currentComponent = MutableStateFlow(Components.CONSTRAINTLAYOUT)
+    val currentComponent = _currentComponent.asStateFlow()
+
     fun updateCurrentContent(component: Components) {
-        //business logic
+        _currentComponent.value = component
     }
 
     fun getComponents() = listOf(
